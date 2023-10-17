@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { React, useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -27,9 +27,21 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 const Signup = () => {
-  const handleSubmit = () => {
-    //handle signup here
-    http.get('get/users')
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    http.post('auth/register', {
+      firstname: firstName,
+      lastname: lastName,
+      email,
+      password,
+      role: "ADMIN"
+    })
     .then((res) => {
       console.log(res);
     })
@@ -62,6 +74,8 @@ const Signup = () => {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  value={firstName}
+                  onChange={e=>setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -72,6 +86,8 @@ const Signup = () => {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  value={lastName}
+                  onChange={e=>setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -82,6 +98,8 @@ const Signup = () => {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={e=>setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -93,6 +111,8 @@ const Signup = () => {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={password}
+                  onChange={e=>setPassword(e.target.value)}
                 />
               </Grid>
             </Grid>

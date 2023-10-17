@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { React, useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -27,11 +27,18 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 const Signin = () => {
-  const handleSubmit = () => {
-    //handle signin here
-    http.get('get/users')
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    http.post('auth/authenticate',{
+      email,
+      password
+    })
     .then((res) => {
-      console.log(res);
+      alert(JSON.stringify(res.data.accessToken));
     })
   }
   return (
@@ -61,6 +68,8 @@ const Signin = () => {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={e => setEmail(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -71,6 +80,8 @@ const Signin = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
               />
               <Button
                 type="submit"
